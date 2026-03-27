@@ -147,12 +147,28 @@ strong { color: var(--text-primary); font-weight: 600; }
    HERO
    ============================================================ */
 #hero {
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 2rem;
   text-align: center;
+}
+
+.bg-paths {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bg-paths svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--text-primary);
 }
 
 .hero-content {

@@ -1,3 +1,57 @@
+// 0. Animated background paths in hero
+(function () {
+  const hero = document.getElementById('hero');
+  const container = document.createElement('div');
+  container.className = 'bg-paths';
+
+  [1, -1].forEach(position => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 696 316');
+    svg.setAttribute('fill', 'none');
+
+    for (let i = 0; i < 36; i++) {
+      const p = position;
+      const d =
+        `M-${380 - i * 5 * p} -${189 + i * 6}` +
+        `C-${380 - i * 5 * p} -${189 + i * 6} ` +
+        `-${312 - i * 5 * p} ${216 - i * 6} ` +
+        `${152 - i * 5 * p} ${343 - i * 6}` +
+        `C${616 - i * 5 * p} ${470 - i * 6} ` +
+        `${684 - i * 5 * p} ${875 - i * 6} ` +
+        `${684 - i * 5 * p} ${875 - i * 6}`;
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('stroke', 'currentColor');
+      path.setAttribute('stroke-width', String(0.5 + i * 0.03));
+      svg.appendChild(path);
+    }
+
+    container.appendChild(svg);
+  });
+
+  hero.insertBefore(container, hero.firstChild);
+
+  container.querySelectorAll('path').forEach((path, globalIdx) => {
+    const i = globalIdx % 36;
+    const totalLen = path.getTotalLength();
+    const dashLen = totalLen * 0.3;
+    const baseOpacity = 0.1 + i * 0.03;
+    const duration = (20 + Math.random() * 10) * 1000;
+
+    path.style.strokeDasharray = `${dashLen} ${totalLen - dashLen}`;
+
+    path.animate(
+      [
+        { strokeDashoffset: 0,          opacity: baseOpacity * 0.5 },
+        { strokeDashoffset: -totalLen,  opacity: baseOpacity },
+        { strokeDashoffset: -totalLen * 2, opacity: baseOpacity * 0.5 },
+      ],
+      { duration, iterations: Infinity, easing: 'linear' }
+    );
+  });
+}());
+
 // 1. Navbar background on scroll
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
